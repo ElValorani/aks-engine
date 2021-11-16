@@ -1,0 +1,29 @@
+{
+    "name": "gVisor",
+    "type": "Microsoft.Resources/deployments",
+    "apiVersion": "[variables('apiVersionDeployments')]",
+    "dependsOn": [
+        "vmLoopNode"
+    ],
+    "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "ttps://raw.githubusercontent.com/ElValorani/aks-engine/master/extensions/gVisor/v1/template.json",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "apiVersionDeployments": {
+                "value": "[variables('apiVersionDeployments')]"
+            },
+            "username": {
+                "value": "[parameters('linuxAdminUsername')]"
+            },
+            "storageAccountBaseName": {
+                "value": "[variables('storageAccountBaseName')]"
+            },
+            "extensionParameters": {
+                "value": "EXTENSION_PARAMETERS_REPLACE"
+            }
+        }
+    }
+}

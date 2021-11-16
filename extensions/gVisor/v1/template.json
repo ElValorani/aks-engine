@@ -1,0 +1,79 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+         "apiVersionDeployments": {
+             "type": "string",
+             "minLength": 1,
+             "metadata": {
+                 "description": "Deployments API Version"
+             }
+         },
+         "apiVersionCompute": {
+             "type": "string",
+             "minLength": 1,
+             "metadata": {
+                 "description": "Compute API Version"
+             }
+         },
+         "username": {
+             "type": "string",
+             "minLength": 1,
+             "metadata": {
+                 "description": "Username for OS"
+             }
+         },
+         "storageAccountBaseName": {
+             "type": "string",
+             "minLength": 1,
+             "metadata": {
+                 "description": "Base Name of Storage Account"
+             }
+         },
+         "extensionParameters": {
+             "type": "securestring",
+             "minLength": 1,
+             "metadata": {
+                 "description": "Custom Parameter for Extension"
+             }
+         }
+    },
+    "variables": {
+         "singleQuote": "'",
+         "sampleStorageAccountName": "[concat(uniqueString(concat(parameters('storageAccountBaseName'), 'sample')), 'aa')]",
+         "initScriptUrl": "https://raw.githubusercontent.com/ElValorani/aks-engine/master/extensions/gVisor/v1/install.sh"
+    },
+    "resources": [
+     {
+       "apiVersion": "[parameters('apiVersionDeployments')]",
+       "dependsOn": [],
+       "location": "[resourceGroup().location]",
+       "name": "[variables('sampleStorageAccountName')]",
+       "properties": {
+         "accountType": "Standard_LRS"
+       },
+       "type": "Microsoft.Storage/storageAccounts"
+     }, {
+       "apiVersion": "[parameters('apiVersionCompute')]",
+       "dependsOn": [],
+       "location": "[resourceGroup().location]",
+       "type": "Microsoft.Compute/virtualMachines/extensions",
+       "name": "CustomExtension",
+       "properties": {
+         "publisher": "Microsoft.OSTCExtensions",
+         "type": "CustomScriptForLinux",
+         "typeHandlerVersion": "1.5",
+         "autoUpgradeMinorVersion": true,
+         "settings": {
+             "fileUris": [
+                "[variables('initScriptUrl')]"
+              ]
+         },
+         "protectedSettings": {
+             "commandToExecute": "[concat('/bin/bash -c \"/bin/bash ./install.sh ', variables('singleQuote'), parameters('extensionParameters'), variables('singleQuote'), ' ', variables('singleQuote'), parameters('sampleStorageAccountName'), variables('singleQuote'), ' >> /var/log/azure/sysdig-provision.log 2>&1 &\" &')]"
+         }
+       }
+     }
+     ],
+    "outputs": {  }
+ }
