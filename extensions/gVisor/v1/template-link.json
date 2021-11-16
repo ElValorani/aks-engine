@@ -1,28 +1,38 @@
 {
-    "name": "gVisor",
+    "name": "[concat(EXTENSION_TARGET_VM_NAME_PREFIX, copyIndex(EXTENSION_LOOP_OFFSET), 'HelloWorldK8s')]",
     "type": "Microsoft.Resources/deployments",
     "apiVersion": "[variables('apiVersionDeployments')]",
     "dependsOn": [
-        "vmLoopNode"
+        "[concat('Microsoft.Compute/virtualMachines/', EXTENSION_TARGET_VM_NAME_PREFIX, copyIndex(EXTENSION_LOOP_OFFSET), '/extensions/cse', '-EXTENSION_TARGET_VM_TYPE-', copyIndex(EXTENSION_LOOP_OFFSET))]"
     ],
+    "copy": {
+        "count": "EXTENSION_LOOP_COUNT",
+        "name": "helloWorldExtensionLoop"
+    },
     "properties": {
         "mode": "Incremental",
         "templateLink": {
-            "uri": "ttps://raw.githubusercontent.com/ElValorani/aks-engine/master/extensions/gVisor/v1/template.json",
+            "uri": "EXTENSION_URL_REPLACEextensions/hello-world-k8s/v1/template.json",
             "contentVersion": "1.0.0.0"
         },
         "parameters": {
+            "artifactsLocation": {
+                "value": "EXTENSION_URL_REPLACE"
+            },
             "apiVersionDeployments": {
                 "value": "[variables('apiVersionDeployments')]"
             },
-            "username": {
-                "value": "[parameters('linuxAdminUsername')]"
+            "targetVMName": {
+                "value": "[concat(EXTENSION_TARGET_VM_NAME_PREFIX, copyIndex(EXTENSION_LOOP_OFFSET))]"
             },
-            "storageAccountBaseName": {
-                "value": "[variables('storageAccountBaseName')]"
+            "targetVMType": {
+                "value": "EXTENSION_TARGET_VM_TYPE"
             },
             "extensionParameters": {
                 "value": "EXTENSION_PARAMETERS_REPLACE"
+            },
+            "vmIndex":{
+                "value": "[copyIndex(EXTENSION_LOOP_OFFSET)]"
             }
         }
     }
