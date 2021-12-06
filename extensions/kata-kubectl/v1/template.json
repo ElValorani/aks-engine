@@ -46,7 +46,7 @@
     },
     "variables": {  
          "singleQuote": "'",
-         "initScriptUrl": "[concat(parameters('artifactsLocation'), 'extensions/gVisor/v1/install.sh')]"
+         "initScriptUrl": "[concat(parameters('artifactsLocation'), 'extensions/kata-kubectl/v1/install.sh')]"
     },
     "resources": [  
      {
