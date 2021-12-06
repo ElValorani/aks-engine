@@ -8,7 +8,6 @@ kubectl apply -f https://raw.githubusercontent.com/kata-containers/kata-containe
 
 kubectl -n kube-system wait --timeout=10m --for=condition=Ready -l name=kata-deploy pod
 
+#apply runtime classes
 kubectl apply -f https://raw.githubusercontent.com/kata-containers/kata-containers/main/tools/packaging/kata-deploy/runtimeclasses/kata-runtimeClasses.yaml
-
-#apply gVisor runtime class
 kubectl apply -f runsc-runtime-class.yaml

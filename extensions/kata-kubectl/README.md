@@ -26,7 +26,7 @@ ls -l /var/log
       ...
       "extensions": [
         {
-          "name": "kata-kubectl",
+          "name": "gVisor",
           "singleOrAll": "single"
         }
      ]
@@ -34,7 +34,7 @@ ls -l /var/log
     ...
     "extensionProfiles": [
       {
-        "name": "kata-kubectl",
+        "name": "gVisor",
         "version": "v1",
         "script": "install.sh"
       }
