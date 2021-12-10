@@ -30,11 +30,8 @@ EOF
 
 cat <<EOF | sudo tee /etc/containerd/runsc.toml
 log_path = "/var/log/runsc/%ID%/shim.log"
-log_level = "debug"
 [runsc_config]
   platform = "kvm"
-  debug = "true"
-  debug-log = "/var/log/runsc/%ID%/gvisor.%COMMAND%.log"
 EOF
 
 sudo systemctl restart containerd
