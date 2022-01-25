@@ -1,24 +1,17 @@
-# hello-world Extension
+# gVisor Extension
 
-Sample hello-world extension.  Calls the following on the node:
+Installs containerd-shim-runsc-v1 and runsc on every node in the cluster and configures runsc as a container runtime in the containerd configuration.
 
-```
- echo "hello"
-```
-
-You can validate that the extension was run by running (make sure you have tunneled into the master):
-```
-ls -l /var/log
 ```
 
 # Configuration
 |Name|Required|Acceptable Value|
 |---|---|---|
-|name|yes|hello-world|
+|name|yes|gVisor|
 |version|yes|v1|
 |extensionParameters|no||
 |rootURL|optional||
-|script|required|hello.sh|
+|script|required|install.sh|
 
 # Example
 ``` javascript
